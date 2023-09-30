@@ -14,14 +14,17 @@ WHITE = (255, 255, 255)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pong Game")
 
+# Music
+pygame.mixer.music.load("wet_fard.mp3")
+
 # Ball properties
 ball = pygame.Rect(WIDTH // 2 - 15, HEIGHT // 2 - 15, 30, 30)
 ball_dx = BALL_SPEED
 ball_dy = BALL_SPEED
 
 # Paddle properties
-player_lpaddle = pygame.Rect(50, HEIGHT // 2 - 60, 20, 175)
-player_rpaddle = pygame.Rect(WIDTH - 50, HEIGHT // 2 - 60, 20, 175)
+lpaddle = pygame.Rect(50, HEIGHT // 2 - 60, 20, 175)
+rpaddle = pygame.Rect(WIDTH - 50, HEIGHT // 2 - 60, 20, 175)
 paddle_speed = PADDLE_SPEED
 
 # Scores
@@ -37,17 +40,17 @@ while True:
 
     # Right move paddles
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w] and player_lpaddle.top > 0:
-        player_lpaddle.y -= paddle_speed
-    if keys[pygame.K_s] and player_lpaddle.bottom < HEIGHT:
-        player_lpaddle.y += paddle_speed
+    if keys[pygame.K_w] and lpaddle.top > 0:
+        lpaddle.y -= paddle_speed
+    if keys[pygame.K_s] and lpaddle.bottom < HEIGHT:
+        lpaddle.y += paddle_speed
 
     # Left move paddles
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP] and player_rpaddle.top > 0:
-        player_rpaddle.y -= paddle_speed
-    if keys[pygame.K_DOWN] and player_rpaddle.bottom < HEIGHT:
-        player_rpaddle.y += paddle_speed
+    if keys[pygame.K_UP] and rpaddle.top > 0:
+        rpaddle.y -= paddle_speed
+    if keys[pygame.K_DOWN] and rpaddle.bottom < HEIGHT:
+        rpaddle.y += paddle_speed
 
     # Ball movement
     ball.x += ball_dx
@@ -58,7 +61,8 @@ while True:
         ball_dy *= -1
 
     # Ball collisions with paddles
-    if ball.colliderect(player_lpaddle) or ball.colliderect(player_rpaddle):
+    if ball.colliderect(lpaddle) or ball.colliderect(rpaddle):
+        pygame.mixer.music.play()
         ball_dx *= -1
 
     # Ball out of bounds
@@ -78,8 +82,8 @@ while True:
     screen.fill((0, 0, 0))
 
     # Draw paddles and ball
-    pygame.draw.rect(screen, WHITE, player_lpaddle)
-    pygame.draw.rect(screen, WHITE, player_rpaddle)
+    pygame.draw.rect(screen, WHITE, lpaddle)
+    pygame.draw.rect(screen, WHITE, rpaddle)
     pygame.draw.ellipse(screen, WHITE, ball)
 
     # Display scores

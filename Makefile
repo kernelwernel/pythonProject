@@ -1,7 +1,7 @@
 all: run
 
 run:	
-	python3 main.py
+	python3 pong.py
 
 push:
 	git add *
